@@ -1,0 +1,8 @@
+.idea
+*~*
+*.pyc
+*#*
+python/build
+python/dist
+python/*.egg-info
+
