@@ -8,5 +8,8 @@ that represents the output file that will be written. The parameter file format 
 wrapper, and .mat for the MATLAB wrapper.
 
 For detailed information on the MATLAB wrapper, see [run_cnmfe_wrapper.m](matlab/run_cnmfe_wrapper.m). For
-information on the Python wrapper, see [runner.py](isx_cnmfe_wrapper/runner.py).
+information on the Python wrapper, see [runner.py](isx_cnmfe_wrapper/runner.py). To install the Python wrapper,
+clone the repository and execute:
+
+    python setup.py install
 
