@@ -230,16 +230,15 @@ function run_cnmfe_wrapper(tiff_file, params_file, output_file)
             delete(output_file);
         end
 
-        h5create(output_file, '/A', Asz);
-        h5write(output_file, '/A', neuron.A);
-
-        h5create(output_file, '/C', Csz);
-        h5write(output_file, '/C', neuron.C);
-
-        h5create(output_file, '/S', Ssz);
-        h5write(output_file, '/S', neuron.S);
-
+        outStruct = struct();
+        outStruct.A = neuron.A;
+        outStruct.C = neuron.C;
+        outStruct.S = neuron.S;
+        
+        save(output_file, '-struct', 'outStruct');
+        
         clear neuron;
+        clear outStruct;
 
     catch ME
         print_exception(ME)
