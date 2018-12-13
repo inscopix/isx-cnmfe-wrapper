@@ -1,12 +1,12 @@
 function run_cnmfe_wrapper(tiff_file, params_file, output_file)
-% Run CNMFe on an .isxd movie file. This code is adapted from the CNMF_E demo script available at
+% Run CNMFe on a .tiff movie file. This code is adapted from the CNMF_E demo script available at
 % https://github.com/zhoupc/CNMF_E/blob/master/demos/demo_batch_1p.m.
 %
 % Arguments
 % ---------
 % tiff_file: The input movie file
 %
-% params_file: A .mat file containing a structure named "params", that
+% params_file: A .mat file containing a structure named "user_params", that
 % contains the parameters used to run CNMFe.
 %
 % output_file: The path to an output .hdf5 file that contains CNMFe

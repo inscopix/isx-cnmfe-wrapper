@@ -76,6 +76,40 @@ def _export_movie_to_memmap(tiff_file, num_frames, num_rows, num_cols, overwrite
 
 
 def run_cnmfe(tiff_file, param_file, output_file):
+    """ Run the CNMFe algorithm through CaImAn.
+
+    :param tiff_file: A .tiff file containing a calcium imaging movie.
+    :param param_file: A .yaml parameter file, containing values for the following parameters:
+        num_processes : int
+            The number of processes to run in parallel. The more parallel processes, the more memory that is used.
+        rf : array-like
+            An array [half-width, half-height] that specifies the size of a patch.
+        stride : int
+            The amount of overlap in pixels between patches.
+        K : int
+            The maximum number of cells per patch.
+        gSiz : int
+            The expected diameter of a neuron in pixels.
+        gSig : int
+            The standard deviation a high pass Gaussian filter applied to the movie prior to seed pixel search, roughly
+            equal to the half-size of the neuron in pixels.
+        min_pnr : float
+            The minimum peak-to-noise ratio that is taken into account when searching for seed pixels.
+        min_corr : float
+            The minimum pixel correlation that is taken into account when searching for seed pixels.
+        min_SNR : float
+            Cells with an signal-to-noise (SNR) less than this are rejected.
+        rval_thr : float
+            Cells with a spatial correlation of greater than this are accepted.
+        decay_time : float
+            The expected decay time of a calcium event in seconds.
+        ssub_B : int
+            The spatial downsampling factor used on the background term.
+        merge_threshold : float
+            Cells that are spatially close with a temporal correlation of greater than merge_threshold are automatically merged.
+    :param output_file: The path to a .hdf5 file that will be written to contain the traces, footprints, and deconvolved
+        events identified by CNMFe.
+    """
 
     if not os.path.exists(tiff_file):
         raise FileNotFoundError(tiff_file)
