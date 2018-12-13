@@ -1,3 +1,19 @@
+%{
+    isx-cnmfe-wrapper provides Python and MATLAB wrappers around CNMFe
+    implementations, used for cell identification in one-photon calcium imaging data.
+    Copyright (C) 2018 Inscopix Inc.
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+%}
+
 function run_cnmfe_wrapper(tiff_file, params_file, output_file)
 % Run CNMFe on a .tiff movie file. This code is adapted from the CNMF_E demo script available at
 % https://github.com/zhoupc/CNMF_E/blob/master/demos/demo_batch_1p.m.
