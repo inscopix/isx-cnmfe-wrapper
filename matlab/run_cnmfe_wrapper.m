@@ -230,15 +230,15 @@ function run_cnmfe_wrapper(tiff_file, params_file, output_file)
             delete(output_file);
         end
 
-        outStruct = struct();
-        outStruct.A = neuron.A;
-        outStruct.C = neuron.C;
-        outStruct.S = neuron.S;
+        out_struct = struct();
+        out_struct.A = neuron.A;
+        out_struct.C = neuron.C;
+        out_struct.S = neuron.S;
         
-        save(output_file, '-struct', 'outStruct');
+        save(output_file, '-struct', 'out_struct');
         
         clear neuron;
-        clear outStruct;
+        clear out_struct;
 
     catch ME
         print_exception(ME)
