@@ -65,14 +65,14 @@ def _get_memmap_name(file_name, num_frames, num_rows, num_cols):
     return mm_name
 
 
-def _export_movie_to_memmap(tiff_file, num_frames, num_rows, num_cols, overwrite=False, dest_dir=None):
+def _export_movie_to_memmap(tiff_files, num_frames, num_rows, num_cols, overwrite=False, dest_dir=None):
 
     if dest_dir is None:
         # use the first movie's directory as the destination directory
-        dest_dir, isxd_movie_name = os.path.split(tiff_file)
+        dest_dir, isxd_movie_name = os.path.split(tiff_files[0])
 
     # use the first movie's name as the output memmap file
-    mmap_name = _get_memmap_name(tiff_file, num_frames, num_rows, num_cols)
+    mmap_name = _get_memmap_name(tiff_files[0], num_frames, num_rows, num_cols)
 
     mmap_file = os.path.join(dest_dir, mmap_name)
     if os.path.exists(mmap_file):
@@ -82,18 +82,21 @@ def _export_movie_to_memmap(tiff_file, num_frames, num_rows, num_cols, overwrite
             return mmap_file
 
     # write a tiff file, use the name of the first movie as the tiff file base name
-    root_dir, fname = os.path.split(tiff_file)
+    root_dir, fname = os.path.split(tiff_files[0])
     base_name, ext = os.path.splitext(fname)
 
-    save_memmap([tiff_file], base_name=base_name, order='C')
+    # fix for edge case where default chunk size is larger than the entire file size
+    n_chunks = min(num_rows*num_cols, 100)
+
+    save_memmap(tiff_files, base_name=base_name, order='C', n_chunks=n_chunks)
 
     return mmap_file
 
 
-def run_cnmfe(tiff_file, param_file, output_file):
+def run_cnmfe(tiff_files, param_file, output_file):
     """ Run the CNMFe algorithm through CaImAn.
 
-    :param tiff_file: A .tiff file containing a calcium imaging movie.
+    :param tiff_files: A list of .tiff files corresponding to a calcium imaging movie.
     :param param_file: A .yaml parameter file, containing values for the following parameters:
         num_processes : int
             The number of processes to run in parallel. The more parallel processes, the more memory that is used.
@@ -126,8 +129,9 @@ def run_cnmfe(tiff_file, param_file, output_file):
         events identified by CNMFe.
     """
 
-    if not os.path.exists(tiff_file):
-        raise FileNotFoundError(tiff_file)
+    for tiff_file in tiff_files:
+        if not os.path.exists(tiff_file):
+            raise FileNotFoundError(tiff_file)
 
     if not os.path.exists(param_file):
         raise FileNotFoundError(param_file)
@@ -164,7 +168,7 @@ def run_cnmfe(tiff_file, param_file, output_file):
 
     # write memmapped file
     print('Exporting .isxd to memmap file...')
-    mmap_file = _export_movie_to_memmap(tiff_file, num_frames, num_rows, num_cols, overwrite=False)
+    mmap_file = _export_movie_to_memmap(tiff_files, num_frames, num_rows, num_cols, overwrite=False)
     print('Wrote .mmap file to: {}'.format(mmap_file))
 
     # open memmapped file
@@ -258,10 +262,12 @@ def save_cnmfe(cnmfe, output_file, good_idx=None):
 
 if __name__ == '__main__':
     _parser = argparse.ArgumentParser(description='Run CaImAn CNMFe')
-    _parser.add_argument('--input_file', type=str, required=True, help='The full path to a .tiff movie.')
+    _parser.add_argument('--input_file', type=str, nargs='+', required=True, help='The full paths to a set of .tiff movies.')
     _parser.add_argument('--params_file', type=str, required=True, help='The full path to a .yaml file containing parameters.')
     _parser.add_argument('--output_file', type=str, required=True, help='The path to dump an .hdf5 file to.')
 
     _args = _parser.parse_args()
 
-    run_cnmfe(_args.input_file.strip('"'), _args.params_file.strip('"'), _args.output_file.strip('"'))
+    print(_args.input_file)
+
+    run_cnmfe(_args.input_file, _args.params_file.strip('"'), _args.output_file.strip('"'))
