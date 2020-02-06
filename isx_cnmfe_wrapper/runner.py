@@ -262,12 +262,10 @@ def save_cnmfe(cnmfe, output_file, good_idx=None):
 
 if __name__ == '__main__':
     _parser = argparse.ArgumentParser(description='Run CaImAn CNMFe')
-    _parser.add_argument('--input_file', type=str, nargs='+', required=True, help='The full paths to a set of .tiff movies.')
+    _parser.add_argument('--input_files', type=str, nargs='+', required=True, help='The full paths to a set of .tiff movies.')
     _parser.add_argument('--params_file', type=str, required=True, help='The full path to a .yaml file containing parameters.')
     _parser.add_argument('--output_file', type=str, required=True, help='The path to dump an .hdf5 file to.')
 
     _args = _parser.parse_args()
 
-    print(_args.input_file)
-
-    run_cnmfe(_args.input_file, _args.params_file.strip('"'), _args.output_file.strip('"'))
+    run_cnmfe(_args.input_files, _args.params_file.strip('"'), _args.output_file.strip('"'))
