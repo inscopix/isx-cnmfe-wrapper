@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 
 setup(name='isx-cnmfe-wrapper',
-      version='1.0',
+      version='1.2',
       description='Inscopix CNMFE Wrapper',
       author='Inscopix, Inc',
       author_email='support@inscopix.com',
