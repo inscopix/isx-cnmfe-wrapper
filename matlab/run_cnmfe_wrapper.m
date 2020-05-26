@@ -241,6 +241,7 @@ function run_cnmfe_wrapper(tiff_file, params_file, output_file)
         Asz = size(neuron.A);
         Csz = size(neuron.C);
         Ssz = size(neuron.S);
+        Crawsz = size(neuron.C_raw);
 
         if exist(output_file, 'file')
             delete(output_file);
@@ -250,6 +251,7 @@ function run_cnmfe_wrapper(tiff_file, params_file, output_file)
         out_struct.A = neuron.A;
         out_struct.C = neuron.C;
         out_struct.S = neuron.S;
+        out_struct.C_raw = neuron.C_raw;
         
         save(output_file, '-struct', 'out_struct');
         
